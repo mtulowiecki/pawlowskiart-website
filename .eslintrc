@@ -1,0 +1,4 @@
+{
+  "parser": "babel",
+  "extends": ["airbnb", "airbnb/hooks"]
+}
