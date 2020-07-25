@@ -21,7 +21,7 @@ const Hamburger = ({ toggle, className }) => {
   const pathTransition = {};
 
   return (
-    <Wrapper onTap={toggle} className={className}>
+    <Wrapper name="navigation" onTap={toggle} className={className}>
       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <g>
           <StyledPath
