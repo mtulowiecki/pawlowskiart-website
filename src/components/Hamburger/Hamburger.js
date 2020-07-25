@@ -11,6 +11,10 @@ const Wrapper = styled(motion.button)`
   border: none;
   background-color: ${({ theme }) => theme.light};
   cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const StyledPath = styled(motion.path)`

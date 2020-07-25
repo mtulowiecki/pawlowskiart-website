@@ -111,9 +111,7 @@ export const query = graphql`
         detail
       }
       image {
-        fluid(maxWidth: 300) {
-          ...GatsbyDatoCmsFluid_noBase64
-        }
+        url
         originalId
       }
     }

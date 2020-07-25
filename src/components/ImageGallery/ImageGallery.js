@@ -1,89 +1,97 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-import Img from 'gatsby-image';
+import { wrap } from '@popmotion/popcorn';
 import { media } from 'utils';
 
-import leftArrow from 'assets/icons/left-arrow.svg';
 import rightArrow from 'assets/icons/right-arrow.svg';
 
 const Wrapper = styled.div`
+  height: 60vh;
   display: flex;
   justify-content: center;
-`;
-
-const LeftCol = styled.div`
-  display: none;
+  align-items: center;
 
   ${media.tablet`
-  display: block;
-  flex-basis: 18%;
+  align-items: flex-start;
   `}
 `;
 
-const SideWrapper = styled.div`
-  display: flex;
+const SideWrapper = styled.aside`
+  display: none;
   flex-direction: column;
-  height: 35rem;
+  height: 55vh;
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
   overflow: auto;
-`;
 
-const SideImage = styled(motion.div)`
+  ${media.tablet`
+  display: flex;
+  `}
+`;
+const SideImage = styled(motion.img)`
   scroll-snap-align: start;
   margin-bottom: 1rem;
-  height: 10rem;
+  height: 20vh;
   cursor: pointer;
 `;
 
-const MainImage = styled(motion.div)`
+const MainImageWrapper = styled.div`
   position: relative;
+  height: 100%;
+  width: 100%;
   margin: 0 1rem;
-  flex-basis: 82%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const Arrow = styled(motion.button)`
-  display: block;
-  height: 2rem;
-  width: 2rem;
+const MainImage = styled(motion.img)`
   position: absolute;
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+`;
+
+const ArrowButton = styled.button`
+  display: block;
+  height: 1.75rem;
+  width: 1.75rem;
+  position: absolute;
+  z-index: 2;
   top: 50%;
   border: none;
+  background: url(${rightArrow}) no-repeat;
+  background-size: 100% 100%;
+  background-position: 50% 50%;
+  fill: ${({ theme }) => theme.gray};
 
   ${({ left }) =>
     left &&
     css`
       left: 0;
-      background: url(${leftArrow}) no-repeat;
+      transform: scaleX(-1);
     `}
-
   ${({ right }) =>
     right &&
     css`
       right: 0;
-      background: url(${rightArrow}) no-repeat;
     `}
 
-  background-size: 60% 60%;
-  background-position: 50% 50%;
-  background-color: ${({ theme }) => theme.light};
-  opacity: 0.7;
+  &:focus {
+    outline: none;
+  }
 
   ${media.tablet`
     display:none;
     `}
 `;
 
-const StyledImage = styled(Img)`
-  width: auto;
-  max-height: 100%;
-  max-width: 100%;
-`;
-
 const ImageGallery = ({ images }) => {
-  const [currentMainImage, setMainImage] = useState(0);
-  const mainImageControls = useAnimation();
+  const [[mainImage, direction], setMainImage] = useState([0, 0]);
+
+  const mainImageIndex = wrap(0, images.length, mainImage);
   const sideImageVariants = {
     active: {
       opacity: 1,
@@ -92,61 +100,99 @@ const ImageGallery = ({ images }) => {
     inactive: { opacity: 0.9, borderBottom: 'solid black 0px' },
   };
 
-  const handleChange = async index => {
-    if (currentMainImage != index) {
-      await mainImageControls.start({ opacity: 0 });
-      setMainImage(index);
-      await mainImageControls.start({ opacity: 1 });
-    }
+  const mainImageVariants = {
+    enter: direction => {
+      return {
+        x: direction > 0 ? 1000 : -1000,
+        opacity: 0,
+      };
+    },
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: direction => {
+      return {
+        zIndex: 0,
+        x: direction < 0 ? 1000 : -1000,
+        opacity: 0,
+      };
+    },
+  };
+
+  const paginate = newDirection => {
+    setMainImage([mainImage + newDirection, newDirection]);
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
   };
 
   return (
     <Wrapper>
-      <LeftCol>
-        <SideWrapper>
-          {images.map((image, index) => {
-            const isCurrent = index === currentMainImage ? true : false;
-            return (
-              <SideImage
-                key={image.originalId}
-                onClick={() => handleChange(index)}
-                initial={isCurrent ? 'active' : 'inactive'}
-                animate={isCurrent ? 'active' : 'inactive'}
-                variants={sideImageVariants}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.1 }}
-              >
-                <StyledImage fluid={image.fluid} />
-              </SideImage>
-            );
-          })}
-        </SideWrapper>
-      </LeftCol>
-      <MainImage animate={mainImageControls} transition={{ duration: 0.3 }}>
-        <StyledImage fluid={images[currentMainImage].fluid} />
-        <AnimatePresence>
-          {currentMainImage > 0 && (
-            <Arrow
-              left
-              name="previous-image"
-              onTap={() => handleChange(currentMainImage - 1)}
-              initial={{ x: '-32' }}
-              animate={{ x: '0' }}
-              exit={{ x: '-32' }}
+      <SideWrapper>
+        {images.map((image, index) => {
+          const isCurrent = index === mainImageIndex ? true : false;
+          const direction = index < mainImageIndex ? 1 : -1;
+          return (
+            <SideImage
+              src={image.url}
+              key={image.originalId}
+              onClick={() => setMainImage([index, direction])}
+              initial={isCurrent ? 'active' : 'inactive'}
+              animate={isCurrent ? 'active' : 'inactive'}
+              variants={sideImageVariants}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.1 }}
             />
-          )}
-          {currentMainImage < images.length - 1 && (
-            <Arrow
-              right
-              name="next-image"
-              onTap={() => handleChange(currentMainImage + 1)}
-              initial={{ x: '32' }}
-              animate={{ x: '0' }}
-              exit={{ x: '32' }}
-            />
-          )}
+          );
+        })}
+      </SideWrapper>
+
+      <MainImageWrapper>
+        <AnimatePresence initial={false} custom={direction}>
+          <MainImage
+            key={mainImageIndex}
+            src={images[mainImageIndex].url}
+            custom={direction}
+            variants={mainImageVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              y: { type: 'spring', stiffness: 200, damping: 500 },
+              opacity: { duration: 0.2 },
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+          />
         </AnimatePresence>
-      </MainImage>
+
+        <ArrowButton
+          left
+          key="left"
+          name="previous-image"
+          onClick={() => paginate(-1)}
+        />
+
+        <ArrowButton
+          right
+          key="right"
+          name="next-image"
+          onClick={() => paginate(1)}
+        />
+      </MainImageWrapper>
     </Wrapper>
   );
 };

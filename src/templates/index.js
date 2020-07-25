@@ -28,8 +28,8 @@ const TextWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   text-align: center;
   background-color: #0a0a0a;
   color: ${({ theme }) => theme.light};
@@ -38,6 +38,7 @@ const TextWrapper = styled.div`
 
   ${media.laptop`
   text-align: right;
+  align-items: stretch;
   grid-column: 1;
   `}
 `;
@@ -45,7 +46,6 @@ const TextWrapper = styled.div`
 const Name = styled.h2`
   margin: 0;
   max-width: 250px;
-
   font-size: ${({ theme }) => theme.fontSize.xl};
 
   ${media.laptop`

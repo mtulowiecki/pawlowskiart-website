@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@popmotion/popcorn": "^0.4.4",
     "dotenv": "^8.2.0",
     "framer-motion": "^2.1.4",
     "gatsby": "^2.23.12",
