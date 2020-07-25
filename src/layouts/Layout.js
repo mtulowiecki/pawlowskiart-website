@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   position: relative;
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
 `;
 
 const Layout = ({ children, locale }) => {
@@ -40,7 +40,6 @@ const Layout = ({ children, locale }) => {
         <Wrapper>
           <Header locale={locale} />
           <main>{children}</main>
-          <Footer />
         </Wrapper>
       </ThemeProvider>
     </>

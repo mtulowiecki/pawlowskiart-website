@@ -88,7 +88,7 @@ const Header = ({ locale }) => {
           </StyledLink>
         </li>
       </List>
-      <Sidebar prefix={prefix} local={locale} />
+      <Sidebar prefix={prefix} locale={locale} />
       <Location>
         {({ location: { pathname } }) => {
           const path = pathname.includes('/en')
