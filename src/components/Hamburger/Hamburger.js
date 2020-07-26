@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
@@ -21,11 +22,11 @@ const StyledPath = styled(motion.path)`
   stroke: ${({ theme }) => theme.secondary};
 `;
 
-const Hamburger = ({ toggle, className }) => {
+const Hamburger = ({ toggle }) => {
   const pathTransition = {};
 
   return (
-    <Wrapper name="navigation" onTap={toggle} className={className}>
+    <Wrapper name="navigation" onTap={toggle}>
       <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <g>
           <StyledPath
@@ -63,6 +64,10 @@ const Hamburger = ({ toggle, className }) => {
       </svg>
     </Wrapper>
   );
+};
+
+Hamburger.propTypes = {
+  toggle: PropTypes.func.isRequired,
 };
 
 export default Hamburger;

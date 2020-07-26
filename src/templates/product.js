@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import styled, { css } from 'styled-components';
 import { media } from 'utils';
@@ -72,7 +73,7 @@ const ProductPage = ({
   pageContext: { locale },
 }) => (
   <Layout locale={locale}>
-    <SEO title="Contact" />
+    <SEO title={title} />
     <Wrapper>
       <ImageGalleryWrapper>
         <ImageGallery images={image} />
@@ -121,9 +122,32 @@ export const query = graphql`
   }
 `;
 
-// image {
-//   fluid(maxWidth: 300) {
-//     ...GatsbyDatoCmsFluid_noBase64
-//   }
+ProductPage.propTypes = {
+  data: PropTypes.shape({
+    datoCmsProduct: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      price: PropTypes.string.isRequired,
+      details: PropTypes.arrayOf(
+        PropTypes.shape({
+          detailName: PropTypes.string.isRequired,
+          detail: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+      image: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string.isRequired,
+          originalId: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    }).isRequired,
+    datoCmsContactPage: PropTypes.shape({
+      phoneNumber: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    locale: PropTypes.oneOf(['pl', 'en']).isRequired,
+  }).isRequired,
+};
 
 export default ProductPage;

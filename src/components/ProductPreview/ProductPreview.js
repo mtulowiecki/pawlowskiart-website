@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
@@ -42,5 +43,16 @@ const ProductPreview = ({ path, title, image, price }) => (
     </CardBody>
   </Wrapper>
 );
+
+ProductPreview.propTypes = {
+  path: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  image: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  price: PropTypes.string.isRequired,
+};
 
 export default ProductPreview;

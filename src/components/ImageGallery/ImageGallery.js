@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { wrap } from '@popmotion/popcorn';
 import { media } from 'utils';
 
@@ -134,7 +135,7 @@ const ImageGallery = ({ images }) => {
     <Wrapper>
       <SideWrapper>
         {images.map((image, index) => {
-          const isCurrent = index === mainImageIndex ? true : false;
+          const isCurrent = index === mainImageIndex;
           const direction = index < mainImageIndex ? 1 : -1;
           return (
             <SideImage
@@ -150,7 +151,6 @@ const ImageGallery = ({ images }) => {
           );
         })}
       </SideWrapper>
-
       <MainImageWrapper>
         <AnimatePresence initial={false} custom={direction}>
           <MainImage
@@ -178,14 +178,12 @@ const ImageGallery = ({ images }) => {
             }}
           />
         </AnimatePresence>
-
         <ArrowButton
           left
           key="left"
           name="previous-image"
           onClick={() => paginate(-1)}
         />
-
         <ArrowButton
           right
           key="right"
@@ -195,6 +193,14 @@ const ImageGallery = ({ images }) => {
       </MainImageWrapper>
     </Wrapper>
   );
+};
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default ImageGallery;

@@ -1,4 +1,21 @@
 {
-  "parser": "babel",
-  "extends": ["airbnb", "airbnb/hooks"]
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:jsx-a11y/recommended",
+    "prettier",
+    "prettier/react"
+  ],
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["./src"],
+        "extensions": [".js"]
+      }
+    }
+  }
 }

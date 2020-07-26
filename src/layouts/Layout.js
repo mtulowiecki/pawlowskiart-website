@@ -5,7 +5,6 @@ import 'normalize.css';
 import { colors, typography } from 'utils';
 
 import Header from 'components/Header/Header';
-import Footer from 'components/Footer/Footer';
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -48,6 +47,7 @@ const Layout = ({ children, locale }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  locale: PropTypes.oneOf(['pl', 'en']).isRequired,
 };
 
 export default Layout;

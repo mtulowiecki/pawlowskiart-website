@@ -1,12 +1,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { motion, useCycle } from 'framer-motion';
-import { useStaticQuery, graphql, Link } from 'gatsby';
+import { Link } from 'gatsby';
 import { Location } from '@reach/router';
 import PropTypes from 'prop-types';
 import { media } from 'utils';
 
-import Hamburger from 'components/Hamburger/Hamburger';
 import Sidebar from 'components/Sidebar/Sidebar';
 
 const StyledHeader = styled.header`
@@ -106,8 +104,12 @@ const Header = ({ locale }) => {
   );
 };
 
-Header.propTypes = {};
+Header.propTypes = {
+  locale: PropTypes.oneOf(['pl', 'en']),
+};
 
-Header.defaultProps = {};
+Header.defaultProps = {
+  locale: 'pl',
+};
 
 export default Header;

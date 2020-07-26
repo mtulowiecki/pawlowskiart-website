@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import Img from 'gatsby-image';
 import styled from 'styled-components';
@@ -34,7 +35,29 @@ const Paragraph = styled.p`
 
 const InfoWrapper = styled.div`
   position: relative;
+  padding: 1rem 0;
   margin: 3.5rem 0 0;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: -5rem;
+    width: 120%;
+    border: solid ${({ theme }) => theme.gra} 1px;
+
+    ${media.laptop`
+    width: 60%;
+    `}
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
 `;
 
 const Info = styled.p`
@@ -67,44 +90,34 @@ const Image = styled(Img)`
 const ContactPage = ({
   data: {
     datoCmsContactPage: {
-      pageTitle,
-      pageParagraph,
+      title,
+      paragraph,
       name,
       phoneNumber,
       emailAdress,
       streetAdress,
       postcodeAdress,
     },
-    file,
+    file: {
+      childImageSharp: { fluid },
+    },
   },
   pageContext: { locale },
 }) => (
   <Layout locale={locale}>
-    <SEO title="Contact" />
+    <SEO title={title} />
     <Wrapper>
-      <Title>{pageTitle}</Title>
-      <Paragraph>{pageParagraph}</Paragraph>
+      <Title>{title}</Title>
+      <Paragraph>{paragraph}</Paragraph>
       <InfoWrapper>
-        <hr
-          style={{
-            transform: 'translateX(-5.5rem)',
-            width: '200%',
-          }}
-        />
         <Info>{name}</Info>
         <Info>{phoneNumber}</Info>
         <Info>{emailAdress}</Info>
         <Info>{streetAdress}</Info>
         <Info>{postcodeAdress}</Info>
-        <hr
-          style={{
-            transform: 'translateX(-5.5rem)',
-            width: '200%',
-          }}
-        />
       </InfoWrapper>
       <ImageWrapper>
-        <Image fluid={file.childImageSharp.fluid} />
+        <Image fluid={fluid} />
       </ImageWrapper>
     </Wrapper>
   </Layout>
@@ -113,8 +126,8 @@ const ContactPage = ({
 export const query = graphql`
   query ContactQuery($locale: String!) {
     datoCmsContactPage(locale: { eq: $locale }) {
-      pageTitle
-      pageParagraph
+      title
+      paragraph
       name
       phoneNumber
       emailAdress
@@ -130,5 +143,27 @@ export const query = graphql`
     }
   }
 `;
+
+ContactPage.propTypes = {
+  data: PropTypes.shape({
+    datoCmsContactPage: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      paragraph: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      phoneNumber: PropTypes.string.isRequired,
+      emailAdress: PropTypes.string.isRequired,
+      streetAdress: PropTypes.string.isRequired,
+      postcodeAdress: PropTypes.string.isRequired,
+    }).isRequired,
+    file: PropTypes.shape({
+      childImageSharp: PropTypes.shape({
+        fluid: PropTypes.any.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    locale: PropTypes.oneOf(['pl', 'en']).isRequired,
+  }).isRequired,
+};
 
 export default ContactPage;

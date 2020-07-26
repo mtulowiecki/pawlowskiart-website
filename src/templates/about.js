@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import styled, { css } from 'styled-components';
 import { media } from 'utils';
@@ -28,15 +29,15 @@ const Paragraph = styled.p`
   font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.dark};
 
-  ${({ theme, rotate }) =>
-    rotate &&
+  ${({ isRotated }) =>
+    isRotated &&
     css`
       width: 5rem;
       padding: 15rem 0;
       transform: rotate(-90deg);
     `}
 
-  ${({ theme, year }) =>
+  ${({ year }) =>
     year &&
     css`
       flex-basis: 300px;
@@ -103,19 +104,19 @@ const AboutPage = ({
   pageContext: { locale },
 }) => (
   <Layout locale={locale}>
-    <SEO title="Contact" />
+    <SEO title={title} />
     <Wrapper>
       <Title>{title}</Title>
       <Paragraph>{paragraph}</Paragraph>
       <ContentWrapper>
         <LeftCol>
-          <Paragraph rotate>
+          <Paragraph isRotated>
             {locale === 'pl' ? 'oś czasu' : 'timeline'}
           </Paragraph>
         </LeftCol>
         <RightCol>
           {biography.map(({ year, content }) => (
-            <YearWrapper>
+            <YearWrapper key={year}>
               <Paragraph year>{year}</Paragraph>
               <Paragraph>{content}</Paragraph>
             </YearWrapper>
@@ -138,5 +139,23 @@ export const query = graphql`
     }
   }
 `;
+
+AboutPage.propTypes = {
+  data: PropTypes.shape({
+    datoCmsAboutPage: PropTypes.shape({
+      title: PropTypes.string,
+      paragraph: PropTypes.string,
+      biography: PropTypes.arrayOf(
+        PropTypes.shape({
+          year: PropTypes.number,
+          content: PropTypes.content,
+        })
+      ),
+    }),
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    locale: PropTypes.oneOf(['pl', 'en']).isRequired,
+  }).isRequired,
+};
 
 export default AboutPage;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { motion, useCycle } from 'framer-motion';
 import { Link } from 'gatsby';
@@ -69,6 +70,15 @@ const Sidebar = ({ prefix, locale }) => {
       </SidebarWrapper>
     </Wrapper>
   );
+};
+
+Sidebar.propTypes = {
+  prefix: PropTypes.string.isRequired,
+  locale: PropTypes.oneOf(['pl', 'en']),
+};
+
+Sidebar.defaultProps = {
+  locale: 'pl',
 };
 
 export default Sidebar;

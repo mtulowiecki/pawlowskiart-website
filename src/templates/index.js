@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { graphql } from 'gatsby';
 import Img from 'gatsby-image';
@@ -99,19 +100,36 @@ const IndexPage = ({
 );
 
 export const query = graphql`
-  query MyQuery($locale: String!) {
+  query IndexQuery($locale: String!) {
     datoCmsHomePage(locale: { eq: $locale }) {
       name
       paragraph
     }
     file(name: { regex: "/hero-image/" }) {
       childImageSharp {
-        fluid {
+        fluid(maxHeight: 600) {
           ...GatsbyImageSharpFluid_noBase64
         }
       }
     }
   }
 `;
+
+IndexPage.propTypes = {
+  data: PropTypes.shape({
+    datoCmsHomePage: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      paragraph: PropTypes.string.isRequired,
+    }).isRequired,
+    file: PropTypes.shape({
+      childImageSharp: PropTypes.shape({
+        fluid: PropTypes.any.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    locale: PropTypes.oneOf(['pl', 'en']).isRequired,
+  }).isRequired,
+};
 
 export default IndexPage;

@@ -1,3 +1,3 @@
-export { default as colors } from './colors.js';
-export { default as typography } from './typography.js';
-export { default as media } from './media.js';
+export { default as colors } from './colors';
+export { default as typography } from './typography';
+export { default as media } from './media';

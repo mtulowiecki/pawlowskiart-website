@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import { media } from 'utils';
@@ -43,16 +44,16 @@ const ProductsWrapper = styled.div`
 
 const ShopPage = ({
   data: {
-    datoCmsShopPage: { pageTitle, pageParagraph },
+    datoCmsShopPage: { title, paragraph },
     allDatoCmsProduct: { nodes },
   },
   pageContext: { locale },
 }) => (
   <Layout locale={locale}>
-    <SEO title="Contact" />
+    <SEO title={title} />
     <Wrapper>
-      <Title>{pageTitle}</Title>
-      <Paragraph>{pageParagraph}</Paragraph>
+      <Title>{title}</Title>
+      <Paragraph>{paragraph}</Paragraph>
       <ProductsWrapper>
         {nodes.map(({ title, image, price, originalId }) => {
           const prefix = locale === 'pl' ? '' : '/en';
@@ -74,8 +75,8 @@ const ShopPage = ({
 export const query = graphql`
   query ShopQuery($locale: String!) {
     datoCmsShopPage(locale: { eq: $locale }) {
-      pageTitle
-      pageParagraph
+      title
+      paragraph
     }
     allDatoCmsProduct(filter: { locale: { eq: $locale } }) {
       nodes {
@@ -89,5 +90,31 @@ export const query = graphql`
     }
   }
 `;
+
+ShopPage.propTypes = {
+  data: PropTypes.shape({
+    datoCmsShopPage: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      paragraph: PropTypes.string.isRequired,
+    }).isRequired,
+    allDatoCmsProduct: PropTypes.shape({
+      nodes: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          price: PropTypes.string.isRequired,
+          originalId: PropTypes.string.isRequired,
+          image: PropTypes.arrayOf(
+            PropTypes.shape({
+              url: PropTypes.string.isRequired,
+            })
+          ).isRequired,
+        })
+      ),
+    }).isRequired,
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    locale: PropTypes.oneOf(['pl', 'en']).isRequired,
+  }).isRequired,
+};
 
 export default ShopPage;

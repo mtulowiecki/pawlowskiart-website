@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import { media } from 'utils';
@@ -30,15 +31,15 @@ const Paragraph = styled.p`
 
 const PortfolioPage = ({
   data: {
-    datoCmsPortfolioPage: { pageTitle, pageParagraph },
+    datoCmsPortfolioPage: { title, paragraph },
   },
   pageContext: { locale },
 }) => (
   <Layout locale={locale}>
-    <SEO title="Contact" />
+    <SEO title={title} />
     <Wrapper>
-      <Title>{pageTitle}</Title>
-      <Paragraph>{pageParagraph}</Paragraph>
+      <Title>{title}</Title>
+      <Paragraph>{paragraph}</Paragraph>
     </Wrapper>
   </Layout>
 );
@@ -46,10 +47,22 @@ const PortfolioPage = ({
 export const query = graphql`
   query PortfolioQuery($locale: String!) {
     datoCmsPortfolioPage(locale: { eq: $locale }) {
-      pageTitle
-      pageParagraph
+      title
+      paragraph
     }
   }
 `;
+
+PortfolioPage.propTypes = {
+  data: PropTypes.shape({
+    datoCmsPortfolioPage: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      paragraph: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    locale: PropTypes.oneOf(['pl', 'en']).isRequired,
+  }).isRequired,
+};
 
 export default PortfolioPage;

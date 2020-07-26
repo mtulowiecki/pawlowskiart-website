@@ -37,9 +37,9 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       `).then(result => {
         ['index', 'about', 'contact', 'shop', 'portfolio'].forEach(template => {
-          let page = result.data[template];
+          const page = result.data[template];
           const prefix = page.locale === 'pl' ? '' : `/${page.locale}`;
-          let slug = template === 'index' ? '' : page.slug;
+          const slug = template === 'index' ? '' : page.slug;
           createPage({
             path: `${prefix}/${slug}`,
             component: path.resolve(`./src/templates/${template}.js`),
