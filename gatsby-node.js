@@ -24,10 +24,6 @@ exports.createPages = async ({ graphql, actions }) => {
               locale
               slug
           },
-          portfolio: datoCmsPortfolioPage(locale: { eq: "${locale}" }) {
-              locale
-              slug
-          },
           products: allDatoCmsProduct(filter: {locale: {eq: "${locale}"}}) {
             nodes {
               locale
@@ -36,7 +32,7 @@ exports.createPages = async ({ graphql, actions }) => {
           }
         }
       `).then(result => {
-        ['index', 'about', 'contact', 'shop', 'portfolio'].forEach(template => {
+        ['index', 'about', 'contact', 'shop'].forEach(template => {
           const page = result.data[template];
           const prefix = page.locale === 'pl' ? '' : `/${page.locale}`;
           const slug = template === 'index' ? '' : page.slug;

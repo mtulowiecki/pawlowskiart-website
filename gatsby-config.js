@@ -3,36 +3,19 @@ require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
-    title: `Krzysztof Pawłowski`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@mtulowiecki`,
+    title: `Michał Tułowiecki`,
+    description: `ayy yo`,
+    author: `@tulski`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-datocms`,
       options: {
-        // You can find your read-only API token under the Settings > API tokens
-        // section of your administrative area:
         apiToken: process.env.API_TOKEN,
-
-        // The project environment to read from. Defaults to the primary environment:
         environment: `master`,
-
-        // If you are working on development/staging environment, you might want to
-        // preview the latest version of records instead of the published one:
-        // previewMode: false,
-
-        // Disable automatic reloading of content when some change occurs on DatoCMS:
-        // disableLiveReload: false,
-
-        // Custom API base URL (most don't need this)
-        // apiUrl: 'https://site-api.datocms.com',
-
-        // Setup locale fallbacks
-        // In this example, if some field value is missing in Italian, fall back to English
         localeFallbacks: {
-          en: ['pl'],
+          en: ['pl'], //  if some field value is missing in Polish, fall back to English
         },
       },
     },
@@ -54,7 +37,6 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/assets/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
     {

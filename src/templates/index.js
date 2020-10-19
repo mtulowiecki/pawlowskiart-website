@@ -10,6 +10,7 @@ import SEO from 'components/SEO/SEO';
 
 const Wrapper = styled.div`
   height: 100%;
+  max-height: calc (100vh - 1rem);
   max-width: 100vw;
   display: grid;
   grid-template: repeat(4, auto) / 2rem auto;
@@ -32,7 +33,7 @@ const TextWrapper = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: #0a0a0a;
+  background-color: #000000;
   color: ${({ theme }) => theme.light};
   grid-row: 2;
   grid-column: 2;
@@ -89,12 +90,7 @@ const IndexPage = ({
         <Name>{name}</Name>
         <Paragraph>{paragraph}</Paragraph>
       </TextWrapper>
-      <StyledImage
-        fluid={fluid}
-        imgStyle={{ objectPosition: '0 50%' }}
-        backgroundColor="#0A0A0A"
-        objectPosition="0 50%"
-      />
+      <StyledImage fluid={fluid} backgroundColor="#000000" />
     </Wrapper>
   </Layout>
 );
@@ -107,7 +103,7 @@ export const query = graphql`
     }
     file(name: { regex: "/hero-image/" }) {
       childImageSharp {
-        fluid(maxHeight: 600) {
+        fluid(maxHeight: 500) {
           ...GatsbyImageSharpFluid_noBase64
         }
       }
@@ -123,7 +119,8 @@ IndexPage.propTypes = {
     }).isRequired,
     file: PropTypes.shape({
       childImageSharp: PropTypes.shape({
-        fluid: PropTypes.any.isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        fluid: PropTypes.object.isRequired,
       }).isRequired,
     }).isRequired,
   }).isRequired,

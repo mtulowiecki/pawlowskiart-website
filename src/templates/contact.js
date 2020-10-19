@@ -43,7 +43,7 @@ const InfoWrapper = styled.div`
     content: '';
     position: absolute;
     left: -5rem;
-    width: 120%;
+    width: 140%;
     border: solid ${({ theme }) => theme.gra} 1px;
 
     ${media.laptop`
@@ -117,7 +117,7 @@ const ContactPage = ({
         <Info>{postcodeAdress}</Info>
       </InfoWrapper>
       <ImageWrapper>
-        <Image fluid={fluid} />
+        <Image fluid={fluid} imgStyle={{ objectPosition: '25% 50%' }} />
       </ImageWrapper>
     </Wrapper>
   </Layout>
@@ -157,6 +157,7 @@ ContactPage.propTypes = {
     }).isRequired,
     file: PropTypes.shape({
       childImageSharp: PropTypes.shape({
+        // eslint-disable-next-line react/forbid-prop-types
         fluid: PropTypes.any.isRequired,
       }).isRequired,
     }).isRequired,

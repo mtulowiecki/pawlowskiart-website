@@ -55,15 +55,15 @@ const ShopPage = ({
       <Title>{title}</Title>
       <Paragraph>{paragraph}</Paragraph>
       <ProductsWrapper>
-        {nodes.map(({ title, image, price, originalId }) => {
+        {nodes.map(product => {
           const prefix = locale === 'pl' ? '' : '/en';
           return (
             <ProductPreview
-              path={`${prefix}/shop/${originalId}`}
-              title={title}
-              image={image}
-              price={price}
-              key={originalId}
+              path={`${prefix}/shop/${product.originalId}`}
+              title={product.title}
+              image={product.image}
+              price={product.price}
+              key={product.originalId}
             />
           );
         })}

@@ -102,9 +102,9 @@ const ImageGallery = ({ images }) => {
   };
 
   const mainImageVariants = {
-    enter: direction => {
+    enter: currentDirection => {
       return {
-        x: direction > 0 ? 1000 : -1000,
+        x: currentDirection > 0 ? 1000 : -1000,
         opacity: 0,
       };
     },
@@ -113,10 +113,10 @@ const ImageGallery = ({ images }) => {
       x: 0,
       opacity: 1,
     },
-    exit: direction => {
+    exit: currentDirection => {
       return {
         zIndex: 0,
-        x: direction < 0 ? 1000 : -1000,
+        x: currentDirection < 0 ? 1000 : -1000,
         opacity: 0,
       };
     },

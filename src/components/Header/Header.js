@@ -65,7 +65,7 @@ const Header = ({ locale }) => {
     <StyledHeader>
       <List>
         <li>
-          <StyledLink to={`${prefix}/`}>pawłowskiArt</StyledLink>
+          <StyledLink to={`${prefix}/`}>tulArt</StyledLink>
         </li>
         <li>
           <StyledLink to={`${prefix}/shop`}>
@@ -76,9 +76,6 @@ const Header = ({ locale }) => {
           <StyledLink to={`${prefix}/about`}>
             {locale === 'pl' ? 'o mnie' : 'about me'}
           </StyledLink>
-        </li>
-        <li>
-          <StyledLink to={`${prefix}/portfolio`}>portfolio</StyledLink>
         </li>
         <li>
           <StyledLink to={`${prefix}/contact`}>
